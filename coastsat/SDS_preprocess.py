@@ -630,7 +630,7 @@ def save_jpg(metadata, settings, **kwargs):
     sitename = settings['inputs']['sitename']
     cloud_thresh = settings['cloud_thresh']
     filepath_data = settings['inputs']['filepath']
-    color_style = setting['color_style']
+    color_style = settings['color_style']
 
     # create subfolder to store the jpg files
     filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', 'preprocessed')
