@@ -515,7 +515,7 @@ def preprocess_single(fn, satname, cloud_mask_issue):
     return im_ms, georef, cloud_mask, im_extra, im_QA, im_nodata
 
 
-def create_jpg(im_ms, cloud_mask, date, satname, filepath):
+def create_jpg(im_ms, cloud_mask, date, satname, filepath, color_style):
     """
     Saves a .jpg file with the RGB image as well as the NIR and SWIR1 grayscale images.
     This functions can be modified to obtain different visualisations of the 
@@ -533,6 +533,11 @@ def create_jpg(im_ms, cloud_mask, date, satname, filepath):
         string containing the date at which the image was acquired
     satname: str
         name of the satellite mission (e.g., 'L5')
+    filepath: str
+        path where file will be stored
+    color_style: bool 
+        defines color style of output image for visual interpretation. 
+        if True, image will be RGB, if False, image will be SNG: SWIR, NIR, Green
 
     Returns:
     -----------
@@ -540,19 +545,33 @@ def create_jpg(im_ms, cloud_mask, date, satname, filepath):
 
     """
 
-    # rescale image intensity for display purposes
-    im_RGB = rescale_image_intensity(im_ms[:,:,[2,1,0]], cloud_mask, 99.9)
+    # Define what type of image to create, RGB or SNG
+    if color_style == True:
+        # rescale image intensity for display purposes, according to the settings of color_style
+        im_RGB = rescale_image_intensity(im_ms[:,:,[2,1,0]], cloud_mask, 99.9)
+        
+        # make RGB figure
+        fig = plt.figure()
+        fig.set_size_inches([18,9])
+        fig.set_tight_layout(True)
+        ax1 = fig.add_subplot(111)
+        ax1.axis('off')
+        ax1.imshow(im_RGB)
+        ax1.set_title(date + '   ' + satname, fontsize=16)
+    else: 
+        # rescale image intensity for display purposes, according to the settings of color_style
+        im_SNG = rescale_image_intensity(im_ms[:,:,[4,3,1]], cloud_mask, 99.9)
+            # make figure (just RGB)
+        fig = plt.figure()
+        fig.set_size_inches([18,9])
+        fig.set_tight_layout(True)
+        ax1 = fig.add_subplot(111)
+        ax1.axis('off')
+        ax1.imshow(im_SNG)
+        ax1.set_title(date + '   ' + satname, fontsize=16)
+
 #    im_NIR = rescale_image_intensity(im_ms[:,:,3], cloud_mask, 99.9)
 #    im_SWIR = rescale_image_intensity(im_ms[:,:,4], cloud_mask, 99.9)
-
-    # make figure (just RGB)
-    fig = plt.figure()
-    fig.set_size_inches([18,9])
-    fig.set_tight_layout(True)
-    ax1 = fig.add_subplot(111)
-    ax1.axis('off')
-    ax1.imshow(im_RGB)
-    ax1.set_title(date + '   ' + satname, fontsize=16)
 
 #    if im_RGB.shape[1] > 2*im_RGB.shape[0]:
 #        ax1 = fig.add_subplot(311)
@@ -611,6 +630,7 @@ def save_jpg(metadata, settings, **kwargs):
     sitename = settings['inputs']['sitename']
     cloud_thresh = settings['cloud_thresh']
     filepath_data = settings['inputs']['filepath']
+    color_style = setting['color_style']
 
     # create subfolder to store the jpg files
     filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', 'preprocessed')
@@ -638,7 +658,7 @@ def save_jpg(metadata, settings, **kwargs):
             # save .jpg with date and satellite in the title
             date = filenames[i][:19]
             plt.ioff()  # turning interactive plotting off
-            create_jpg(im_ms, cloud_mask, date, satname, filepath_jpg)
+            create_jpg(im_ms, cloud_mask, date, satname, filepath_jpg, color_style)
 
     # print the location where the images have been saved
     print('Satellite images saved as .jpg in ' + os.path.join(filepath_data, sitename,
