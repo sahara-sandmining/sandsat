@@ -11,7 +11,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pdb
-
+import matplotlib
+matplotlib.use('Qt4Agg')
 # image processing modules
 import skimage.transform as transform
 import skimage.morphology as morphology
