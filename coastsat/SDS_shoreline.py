@@ -262,6 +262,31 @@ def find_wl_contours2(im_ms, im_labels, cloud_mask, buffer_size, im_ref_buffer):
     im_ind = np.stack((im_wi, im_mwi), axis=-1)
     vec_ind = im_ind.reshape(nrows*ncols,2)
 
+    ##### <<<<<<<<<<<<<<<<<< DIRTYHACK >>>>>>>>>>>>>>>>>>>>>>>> ####
+    # Find a better way to do it! 
+
+    # Update the indexes:
+    # If all the indexes are false (without a lable, i.e others)
+    # add the index true for sand. 
+    # If the index for white water is true, automatically update 
+    # update the index to water index.  
+    for array in np.ndindex(im_labels.shape[:2]):
+        i,j   = array
+        if np.any( im_labels[array] == True ):
+            if im_labels[i,j,1] == True:
+                # print("Check if it is true:", im_labels[i,j,1])
+                # print("Before the water update:", im_labels[i,j,2])
+                im_labels[i,j,2] = True
+                # print("After the water update:", im_labels[i,j,2])
+        else: 
+            # print("Before", im_labels[array] )
+            # print("Checj if it is the first element: ", im_labels[i,j,0])
+            im_labels[i,j,0] = True 
+            # print("After", im_labels[array])
+            pass
+        pass
+    ##### <<<<<<<<<<<<<<<<<<< DIRTYHACK >>>>>>>>>>>>>>>>>>>>>>>> ####
+
     # reshape labels into vectors
     vec_sand = im_labels[:,:,0].reshape(ncols*nrows)
     vec_water = im_labels[:,:,2].reshape(ncols*nrows)
