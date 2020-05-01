@@ -219,7 +219,7 @@ def find_wl_contours1(im_ndwi, cloud_mask, im_ref_buffer):
 
     return contours
 
-def find_wl_contours2(im_ms, im_labels, cloud_mask, buffer_size, im_ref_buffer):
+def find_wl_contours2(im_ms, im_labels, cloud_mask, buffer_size, im_ref_buffer, dirty_hack_flag):
     """
     New robust method for extracting shorelines. Incorporates the classification
     component to refine the treshold and make it specific to the sand/water interface.
@@ -262,30 +262,34 @@ def find_wl_contours2(im_ms, im_labels, cloud_mask, buffer_size, im_ref_buffer):
     im_ind = np.stack((im_wi, im_mwi), axis=-1)
     vec_ind = im_ind.reshape(nrows*ncols,2)
 
-    ##### <<<<<<<<<<<<<<<<<< DIRTYHACK >>>>>>>>>>>>>>>>>>>>>>>> ####
-    # Find a better way to do it! 
+    # print("The flag for dirty hack: ", dirty_hack_flag)
+    if dirty_hack_flag:
+        print("I am doing the dirty hack!")
+        ##### <<<<<<<<<<<<<<<<<< DIRTYHACK >>>>>>>>>>>>>>>>>>>>>>>> ####
+        # Find a better way to do it! 
 
-    # Update the indexes:
-    # If all the indexes are false (without a lable, i.e others)
-    # add the index true for sand. 
-    # If the index for white water is true, automatically update 
-    # update the index to water index.  
-    for array in np.ndindex(im_labels.shape[:2]):
-        i,j   = array
-        if np.any( im_labels[array] == True ):
-            if im_labels[i,j,1] == True:
-                # print("Check if it is true:", im_labels[i,j,1])
-                # print("Before the water update:", im_labels[i,j,2])
-                im_labels[i,j,2] = True
-                # print("After the water update:", im_labels[i,j,2])
-        else: 
-            # print("Before", im_labels[array] )
-            # print("Checj if it is the first element: ", im_labels[i,j,0])
-            im_labels[i,j,0] = True 
-            # print("After", im_labels[array])
+        # Update the indexes:
+        # If all the indexes are false (without a lable, i.e others)
+        # add the index true for sand. 
+        # If the index for white water is true, automatically update 
+        # update the index to water index.  
+        for array in np.ndindex(im_labels.shape[:2]):
+            i,j   = array
+            if np.any( im_labels[array] == True ):
+                if im_labels[i,j,1] == True:
+                    # print("Check if it is true:", im_labels[i,j,1])
+                    # print("Before the water update:", im_labels[i,j,2])
+                    im_labels[i,j,2] = True
+                    # print("After the water update:", im_labels[i,j,2])
+            else: 
+                # print("Before", im_labels[array] )
+                # print("Checj if it is the first element: ", im_labels[i,j,0])
+                im_labels[i,j,0] = True 
+                # print("After", im_labels[array])
+                pass
             pass
-        pass
-    ##### <<<<<<<<<<<<<<<<<<< DIRTYHACK >>>>>>>>>>>>>>>>>>>>>>>> ####
+        ##### <<<<<<<<<<<<<<<<<<< DIRTYHACK >>>>>>>>>>>>>>>>>>>>>>>> ####
+        pass 
 
     # reshape labels into vectors
     vec_sand = im_labels[:,:,0].reshape(ncols*nrows)
@@ -815,7 +819,8 @@ def extract_shorelines(metadata, settings):
                 else:
                     # use classification to refine threshold and extract the sand/water interface
                     contours_wi, contours_mwi = find_wl_contours2(im_ms, im_labels,
-                                                cloud_mask, buffer_size_pixels, im_ref_buffer)
+                                                cloud_mask, buffer_size_pixels, im_ref_buffer, 
+                                                settings['dirty_hack_flag'])
             except:
                 print('Could not map shoreline for this image: ' + filenames[i])
                 continue
