@@ -100,69 +100,69 @@ settings['max_dist_ref'] = 100
 # extract shorelines from all images (also saves output.pkl and shorelines.kml)
 output = SDS_shoreline.extract_shorelines(metadata, settings)
 
-# # plot the mapped shorelines
-# fig = plt.figure()
-# plt.axis('equal')
-# plt.xlabel('Eastings')
-# plt.ylabel('Northings')
-# plt.grid(linestyle=':', color='0.5')
-# for i in range(len(output['shorelines'])):
-#     sl = output['shorelines'][i]
-#     date = output['dates'][i]
-#     plt.plot(sl[:,0], sl[:,1], '.', label=date.strftime('%d-%m-%Y'))
-# plt.legend()
-# mng = plt.get_current_fig_manager()                                         
-# mng.window.showMaximized()    
-# fig.set_size_inches([15.76,  8.52])
+# plot the mapped shorelines
+fig = plt.figure()
+plt.axis('equal')
+plt.xlabel('Eastings')
+plt.ylabel('Northings')
+plt.grid(linestyle=':', color='0.5')
+for i in range(len(output['shorelines'])):
+    sl = output['shorelines'][i]
+    date = output['dates'][i]
+    plt.plot(sl[:,0], sl[:,1], '.', label=date.strftime('%d-%m-%Y'))
+plt.legend()
+mng = plt.get_current_fig_manager()                                         
+mng.window.showMaximized()    
+fig.set_size_inches([15.76,  8.52])
 
-# #%% 4. Shoreline analysis
+#%% 4. Shoreline analysis
 
-# # if you have already mapped the shorelines, load the output.pkl file
-# filepath = os.path.join(inputs['filepath'], sitename)
-# with open(os.path.join(filepath, sitename + '_output' + '.pkl'), 'rb') as f:
-#     output = pickle.load(f) 
+# if you have already mapped the shorelines, load the output.pkl file
+filepath = os.path.join(inputs['filepath'], sitename)
+with open(os.path.join(filepath, sitename + '_output' + '.pkl'), 'rb') as f:
+    output = pickle.load(f) 
 
-# # now we have to define cross-shore transects over which to quantify the shoreline changes
-# # each transect is defined by two points, its origin and a second point that defines its orientation
+# now we have to define cross-shore transects over which to quantify the shoreline changes
+# each transect is defined by two points, its origin and a second point that defines its orientation
 
-# # there are 3 options to create the transects:
-# # - option 1: draw the shore-normal transects along the beach
-# # - option 2: load the transect coordinates from a .kml file
-# # - option 3: create the transects manually by providing the coordinates
+# there are 3 options to create the transects:
+# - option 1: draw the shore-normal transects along the beach
+# - option 2: load the transect coordinates from a .kml file
+# - option 3: create the transects manually by providing the coordinates
 
-# # option 1: draw origin of transect first and then a second point to define the orientation
-# transects = SDS_transects.draw_transects(output, settings)
+# option 1: draw origin of transect first and then a second point to define the orientation
+transects = SDS_transects.draw_transects(output, settings)
     
-# # option 2: load the transects from a .geojson file
-# #geojson_file = os.path.join(os.getcwd(), 'examples', 'NARRA_transects.geojson')
-# #transects = SDS_tools.transects_from_geojson(geojson_file)
+# option 2: load the transects from a .geojson file
+#geojson_file = os.path.join(os.getcwd(), 'examples', 'NARRA_transects.geojson')
+#transects = SDS_tools.transects_from_geojson(geojson_file)
 
-# # option 3: create the transects by manually providing the coordinates of two points 
-# #transects = dict([])
-# #transects['Transect 1'] = np.array([[342836, 6269215], [343315, 6269071]])
-# #transects['Transect 2'] = np.array([[342482, 6268466], [342958, 6268310]])
-# #transects['Transect 3'] = np.array([[342185, 6267650], [342685, 6267641]])
+# option 3: create the transects by manually providing the coordinates of two points 
+#transects = dict([])
+#transects['Transect 1'] = np.array([[342836, 6269215], [343315, 6269071]])
+#transects['Transect 2'] = np.array([[342482, 6268466], [342958, 6268310]])
+#transects['Transect 3'] = np.array([[342185, 6267650], [342685, 6267641]])
    
-# # intersect the transects with the 2D shorelines to obtain time-series of cross-shore distance
-# # (also saved a .csv file with the time-series, dates are in UTC time)
-# settings['along_dist'] = 25
-# cross_distance = SDS_transects.compute_intersection(output, transects, settings) 
+# intersect the transects with the 2D shorelines to obtain time-series of cross-shore distance
+# (also saved a .csv file with the time-series, dates are in UTC time)
+settings['along_dist'] = 25
+cross_distance = SDS_transects.compute_intersection(output, transects, settings) 
 
-# # plot the time-series
-# from matplotlib import gridspec
-# fig = plt.figure()
-# gs = gridspec.GridSpec(len(cross_distance),1)
-# gs.update(left=0.05, right=0.95, bottom=0.05, top=0.95, hspace=0.05)
-# for i,key in enumerate(cross_distance.keys()):
-#     if np.all(np.isnan(cross_distance[key])):
-#         continue
-#     ax = fig.add_subplot(gs[i,0])
-#     ax.grid(linestyle=':', color='0.5')
-#     ax.set_ylim([-50,50])
-#     ax.plot(output['dates'], cross_distance[key]- np.nanmedian(cross_distance[key]), '-^', markersize=6)
-#     ax.set_ylabel('distance [m]', fontsize=12)
-#     ax.text(0.5,0.95,'Transect ' + key, bbox=dict(boxstyle="square", ec='k',fc='w'), ha='center',
-#             va='top', transform=ax.transAxes, fontsize=14)
-# mng = plt.get_current_fig_manager()                                         
-# mng.window.showMaximized()    
-# fig.set_size_inches([15.76,  8.52])
+# plot the time-series
+from matplotlib import gridspec
+fig = plt.figure()
+gs = gridspec.GridSpec(len(cross_distance),1)
+gs.update(left=0.05, right=0.95, bottom=0.05, top=0.95, hspace=0.05)
+for i,key in enumerate(cross_distance.keys()):
+    if np.all(np.isnan(cross_distance[key])):
+        continue
+    ax = fig.add_subplot(gs[i,0])
+    ax.grid(linestyle=':', color='0.5')
+    ax.set_ylim([-50,50])
+    ax.plot(output['dates'], cross_distance[key]- np.nanmedian(cross_distance[key]), '-^', markersize=6)
+    ax.set_ylabel('distance [m]', fontsize=12)
+    ax.text(0.5,0.95,'Transect ' + key, bbox=dict(boxstyle="square", ec='k',fc='w'), ha='center',
+            va='top', transform=ax.transAxes, fontsize=14)
+mng = plt.get_current_fig_manager()                                         
+mng.window.showMaximized()    
+fig.set_size_inches([15.76,  8.52])
