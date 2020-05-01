@@ -32,7 +32,7 @@ def auto_comp_transects(transect_settings):
     Arguments:
     -----------
     transect_settings: dict with the following keys
-        'filename' : str
+        'reference_filename' : str
             filename of the reference shoreline
         'spacing' : int 
             Profile spacing. The distance at which to space the perpendicular profiles
@@ -57,7 +57,7 @@ def auto_comp_transects(transect_settings):
     filepath = os.path.join(settings['inputs']['filepath'], sitename)
     
     # read reference shoreline in 'refline'
-    refline = gpd.read_file(transect_settings['filename'])
+    refline = gpd.read_file(transect_settings['reference_filename'])
     
     # check for projected coordinates
     wgs84 = {'init': 'epsg:4326'}
