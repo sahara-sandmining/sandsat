@@ -12,4 +12,5 @@
 *.geojson
 *checkpoint.ipynb
 *.csv
+*.avi
 data/
