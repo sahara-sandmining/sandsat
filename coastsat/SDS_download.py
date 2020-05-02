@@ -757,7 +757,7 @@ def get_metadata(inputs):
     # initialize metadata dict
     metadata = dict([])
     # loop through the satellite missions
-    for satname in ['L5','L7','L8','S2']:
+    for satname in inputs["sat_list"]:
         # if a folder has been created for the given satellite mission
         if satname in os.listdir(filepath):
             # update the metadata dict
