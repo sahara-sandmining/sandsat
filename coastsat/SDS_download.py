@@ -790,7 +790,7 @@ def get_metadata(inputs):
             filenames_meta_after_check.sort()
             filenames_meta.sort()
 
-            print("Total number of images found in the download folder: ", len(filenames_meta_after_check))
+            print("Total number of images found in the", satname, "download folder: ", len(filenames_meta_after_check))
             #### <<<<<<<<<<<, TEMP CODE TO ONLY LOAD THE FILES SELECTED BY THE USER >>>>>>>.
 
             for im_meta in filenames_meta_after_check:
