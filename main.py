@@ -164,41 +164,41 @@ settings = {
 }
 
 
-# # save jpeg of processed satellite image
-# #SDS_preprocess.save_jpg(metadata, settings)
+# save jpeg of processed satellite image
+#SDS_preprocess.save_jpg(metadata, settings)
 
-# """poy = gpd.read_file("poyang_refline1.geojson")
-# g = [i for i in poy.geometry]
-# x,y = g[0].coords.xy
-# coords1 = np.dstack((x,y))[0]
+"""poy = gpd.read_file("poyang_refline1.geojson")
+g = [i for i in poy.geometry]
+x,y = g[0].coords.xy
+coords1 = np.dstack((x,y))[0]
 
-# poy = gpd.read_file("poyang_refline2.geojson")
-# g = [i for i in poy.geometry]
-# x,y = g[0].coords.xy
-# coords2 = np.dstack((x,y))[0]
+poy = gpd.read_file("poyang_refline2.geojson")
+g = [i for i in poy.geometry]
+x,y = g[0].coords.xy
+coords2 = np.dstack((x,y))[0]
 
-# print(coords1)
-# print(coords2)""" 
+print(coords1)
+print(coords2)""" 
 
-# '''if 'coords2' in globals():
-#     print("Using dual reference")
-#     refs = np.append(coords1, coords2, axis = 0)
-# elif 'coords2' in locals():
-#     print("Using dual reference")
-#     refs = np.append(coords1, coords2, axis = 0)
-# else:
-#     print("using single reference")
-#     refs = coords1
-# print(refs)'''
+'''if 'coords2' in globals():
+    print("Using dual reference")
+    refs = np.append(coords1, coords2, axis = 0)
+elif 'coords2' in locals():
+    print("Using dual reference")
+    refs = np.append(coords1, coords2, axis = 0)
+else:
+    print("using single reference")
+    refs = coords1
+print(refs)'''
 
 
-# """with open("data/POYANG2/POYANG2_reference_shoreline.pkl", "wb") as f:
-#     pickle.dump(refs, f)"""
+"""with open("data/POYANG2/POYANG2_reference_shoreline.pkl", "wb") as f:
+    pickle.dump(refs, f)"""
 
 
 # get_ipython().run_line_magic('matplotlib', 'qt')
-# settings['reference_shoreline'] = SDS_preprocess.get_reference_sl(metadata, settings)
-# settings['max_dist_ref'] = 1000 # max distance (in meters) allowed from the reference shoreline
+settings['reference_shoreline'] = SDS_preprocess.get_reference_sl(metadata, settings)
+settings['max_dist_ref'] = 1000 # max distance (in meters) allowed from the reference shoreline
 
 print("")
 print("******************************************************************")
@@ -228,7 +228,7 @@ else:
                     (minLengthSl - minLengthSlMonteCarlo), (minLengthSl + minLengthSlMonteCarlo))
             # print("minLengthSl: ", settings["minLengthSl"])
             pass 
-        # output = SDS_shoreline.extract_shorelines(metadata, settings)
+        output = SDS_shoreline.extract_shorelines(metadata, settings)
         SDS_tools.make_video(settings)
         pass 
 
