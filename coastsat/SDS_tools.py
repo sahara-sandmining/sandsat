@@ -561,11 +561,13 @@ def make_video(settings):
     
         # create a subfolder to store the .jpg images showing the detection
         pathSimulation          = 'detection_' 
-        pathSimulation          += str(settings['minBeachArea']) 
+        pathSimulation          += str(settings['min_beach_area']) 
         pathSimulation          += '_' 
-        pathSimulation          += str(settings['bufferSize']) 
+        pathSimulation          += str(settings['buffer_size']) 
         pathSimulation          += '_' 
-        pathSimulation          += str(settings['minLengthSl']) 
+        pathSimulation          += str(settings['min_length_sl'])
+        pathSimulation          += '_' 
+        pathSimulation          += str(settings['max_dist_ref'])  
         
         filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', pathSimulation)
         try: 

@@ -74,6 +74,8 @@ bufferSize                          = inputParameters["bufferSize"]
 bufferSizeMonteCarlo                = inputParameters["bufferSizeMonteCarlo"] 
 minLengthSl                         = inputParameters["minLengthSl"] 
 minLengthSlMonteCarlo               = inputParameters["minLengthMonteCarlo"] 
+maximumDistanceReference            = inputParameters["maximumDistanceReference"] 
+maximumDistanceReferenceMonteCarlo  = inputParameters["maximumDistanceReferenceMonteCarlo"] 
 numberOfMonteCarloSimulations       = inputParameters["numberOfMonteCarloSimulations"]
 videoOutputFlag                     = inputParameters["videoOutputFlag"]
 
@@ -163,42 +165,41 @@ settings = {
     'sand_color': sandColor,    # 'default', 'dark' (for grey/black sand beaches) or 'bright' (for white sand beaches)
 }
 
+# # save jpeg of processed satellite image
+# SDS_preprocess.save_jpg(metadata, settings)
 
-# save jpeg of processed satellite image
-#SDS_preprocess.save_jpg(metadata, settings)
+# poy = gpd.read_file("poyang_refline1.geojson")
+# g = [i for i in poy.geometry]
+# x,y = g[0].coords.xy
+# coords1 = np.dstack((x,y))[0]
 
-"""poy = gpd.read_file("poyang_refline1.geojson")
-g = [i for i in poy.geometry]
-x,y = g[0].coords.xy
-coords1 = np.dstack((x,y))[0]
+# poy = gpd.read_file("poyang_refline2.geojson")
+# g = [i for i in poy.geometry]
+# x,y = g[0].coords.xy
+# coords2 = np.dstack((x,y))[0]
 
-poy = gpd.read_file("poyang_refline2.geojson")
-g = [i for i in poy.geometry]
-x,y = g[0].coords.xy
-coords2 = np.dstack((x,y))[0]
+# print(coords1)
+# print(coords2)
 
-print(coords1)
-print(coords2)""" 
-
-'''if 'coords2' in globals():
-    print("Using dual reference")
-    refs = np.append(coords1, coords2, axis = 0)
-elif 'coords2' in locals():
-    print("Using dual reference")
-    refs = np.append(coords1, coords2, axis = 0)
-else:
-    print("using single reference")
-    refs = coords1
-print(refs)'''
-
-
-"""with open("data/POYANG2/POYANG2_reference_shoreline.pkl", "wb") as f:
-    pickle.dump(refs, f)"""
+# if 'coords2' in globals():
+#     print("Using dual reference")
+#     refs = np.append(coords1, coords2, axis = 0)
+# elif 'coords2' in locals():
+#     print("Using dual reference")
+#     refs = np.append(coords1, coords2, axis = 0)
+# else:
+#     print("using single reference")
+#     refs = coords1
+# print(refs)
 
 
-# get_ipython().run_line_magic('matplotlib', 'qt')
-settings['reference_shoreline'] = SDS_preprocess.get_reference_sl(metadata, settings)
-settings['max_dist_ref'] = 1000 # max distance (in meters) allowed from the reference shoreline
+# with open("data/POYANG2/POYANG2_reference_shoreline.pkl", "wb") as f:
+#     pickle.dump(refs, f)
+
+
+# # get_ipython().run_line_magic('matplotlib', 'qt')
+# settings['reference_shoreline'] = SDS_preprocess.get_reference_sl(metadata, settings)
+settings['max_dist_ref']          = maximumDistanceReference
 
 print("")
 print("******************************************************************")
@@ -208,26 +209,28 @@ print("")
 
 # #moment of truth
 # get_ipython().run_line_magic('matplotlib', 'qt')
-if numberOfMonteCarloSimulations    == 0: 
+if numberOfMonteCarloSimulations == 0: 
     output = SDS_shoreline.extract_shorelines(metadata, settings)
 else:
     print("Running the Monte Carlo simulations!")
     for ii in range(numberOfMonteCarloSimulations):
         if minBeachAreaMonteCarlo != None: 
-            settings["minBeachArea"] = random.randint(
+            settings["min_beach_area"] = random.randint(
                     (minBeachArea - minBeachAreaMonteCarlo), (minBeachArea + minBeachAreaMonteCarlo))
-            # print("Minmum beach area: ", settings["minBeachArea"])
             pass 
         if bufferSizeMonteCarlo != None: 
-            settings["bufferSize"] = random.randint(
+            settings["buffer_size"] = random.randint(
                     (bufferSize - bufferSizeMonteCarlo), (bufferSize + bufferSizeMonteCarlo))
-            # print("bufferSize: ", settings["bufferSize"])
             pass 
         if minLengthSlMonteCarlo != None: 
-            settings["minLengthSl"] = random.randint(
+            settings["min_length_sl"] = random.randint(
                     (minLengthSl - minLengthSlMonteCarlo), (minLengthSl + minLengthSlMonteCarlo))
-            # print("minLengthSl: ", settings["minLengthSl"])
             pass 
+        if maximumDistanceReferenceMonteCarlo != None:
+            # max distance (in meters) allowed from the reference shoreline
+            settings['max_dist_ref'] = random.randint(
+                    (maximumDistanceReference - maximumDistanceReferenceMonteCarlo), (maximumDistanceReference + maximumDistanceReferenceMonteCarlo)) 
+            pass
         output = SDS_shoreline.extract_shorelines(metadata, settings)
         SDS_tools.make_video(settings)
         pass 

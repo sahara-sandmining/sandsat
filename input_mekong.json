@@ -25,7 +25,8 @@
     "bufferSizeMonteCarlo"              : 15, 
     "minLengthSl"                       : 200, 
     "minLengthMonteCarlo"               : 20, 
-
-    "numberOfMonteCarloSimulations"     : 2,    
-    "videoOutputFlag"                   : true
+    "maximumDistanceReference"          : 1000, 
+    "maximumDistanceReferenceMonteCarlo": 200, 
+    "numberOfMonteCarloSimulations"     : 1,    
+    "videoOutputFlag"                   : false
 }
