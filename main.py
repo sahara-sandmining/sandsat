@@ -78,6 +78,7 @@ maximumDistanceReference            = inputParameters["maximumDistanceReference"
 maximumDistanceReferenceMonteCarlo  = inputParameters["maximumDistanceReferenceMonteCarlo"] 
 numberOfMonteCarloSimulations       = inputParameters["numberOfMonteCarloSimulations"]
 videoOutputFlag                     = inputParameters["videoOutputFlag"]
+saveJpgPreprocessFlag               = inputParameters["saveJpgPreprocessFlag"]
 
 # Print the variables
 print("Dates for analysis:                      ", dates)
@@ -165,8 +166,10 @@ settings = {
     'sand_color': sandColor,    # 'default', 'dark' (for grey/black sand beaches) or 'bright' (for white sand beaches)
 }
 
-# # save jpeg of processed satellite image
-# SDS_preprocess.save_jpg(metadata, settings)
+# save jpeg of processed satellite image
+if saveJpgPreprocessFlag:
+    SDS_preprocess.save_jpg(metadata, settings)
+    pass 
 
 # poy = gpd.read_file("poyang_refline1.geojson")
 # g = [i for i in poy.geometry]
@@ -207,7 +210,7 @@ print("                Extracting the shoreline                          ")
 print("******************************************************************")
 print("")
 
-# #moment of truth
+# Moment of truth
 # get_ipython().run_line_magic('matplotlib', 'qt')
 if numberOfMonteCarloSimulations == 0: 
     output = SDS_shoreline.extract_shorelines(metadata, settings)

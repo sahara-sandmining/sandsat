@@ -28,5 +28,6 @@
     "maximumDistanceReference"          : 1000, 
     "maximumDistanceReferenceMonteCarlo": 200, 
     "numberOfMonteCarloSimulations"     : 1,    
-    "videoOutputFlag"                   : false
+    "videoOutputFlag"                   : false, 
+    "saveJpgPreprocessFlag"             : false
 }
