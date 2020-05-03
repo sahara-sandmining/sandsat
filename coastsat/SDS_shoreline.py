@@ -533,7 +533,14 @@ def show_detection(im_ms, cloud_mask, im_labels, shoreline,image_epsg, georef,
     sitename = settings['inputs']['sitename']
     filepath_data = settings['inputs']['filepath']
     # subfolder where the .jpg file is stored if the user accepts the shoreline detection
-    filepath = os.path.join(filepath_data, sitename, 'jpg_files', 'detection')
+    pathSimulation          = 'detection_' 
+    pathSimulation          += str(settings['minBeachArea']) 
+    pathSimulation          += '_' 
+    pathSimulation          += str(settings['bufferSize']) 
+    pathSimulation          += '_' 
+    pathSimulation          += str(settings['minLengthSl']) 
+    
+    filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', pathSimulation)
 
     im_RGB = SDS_preprocess.rescale_image_intensity(im_ms[:,:,[2,1,0]], cloud_mask, 99.9)
 
@@ -675,7 +682,7 @@ def show_detection(im_ms, cloud_mask, im_labels, shoreline,image_epsg, georef,
 
     # if save_figure is True, save a .jpg under /jpg_files/detection
     if settings['save_figure'] and not skip_image:
-        fig.savefig(os.path.join(filepath, date + '_' + satname + '.jpg'), dpi=150)
+        fig.savefig(os.path.join(filepath_jpg, date + '_' + satname + '.jpg'), dpi=150)
 
     # Don't close the figure window, but remove all axes and settings, ready for next plot
     for ax in fig.axes:
@@ -733,7 +740,14 @@ def extract_shorelines(metadata, settings):
     # initialise output structure
     output = dict([])
     # create a subfolder to store the .jpg images showing the detection
-    filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', 'detection')
+    pathSimulation          = 'detection_' 
+    pathSimulation          += str(settings['minBeachArea']) 
+    pathSimulation          += '_' 
+    pathSimulation          += str(settings['bufferSize']) 
+    pathSimulation          += '_' 
+    pathSimulation          += str(settings['minLengthSl']) 
+    
+    filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', pathSimulation)
     if not os.path.exists(filepath_jpg):
             os.makedirs(filepath_jpg)
     # close all open figures
