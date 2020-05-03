@@ -213,23 +213,23 @@ else:
             settings['max_dist_ref'] = random.randint(
                     (maximumDistanceReference - maximumDistanceReferenceMonteCarlo), (maximumDistanceReference + maximumDistanceReferenceMonteCarlo)) 
             pass
-        # output = SDS_shoreline.extract_shorelines(metadata, settings)
-        # SDS_tools.make_video(settings)
+        output = SDS_shoreline.extract_shorelines(metadata, settings)
+        SDS_tools.make_video(settings)
 
-        transectSettings['additional inputs']       = settings
-        transects_gdf = SDS_transects.auto_comp_transects(transectSettings)
-        transects_gdf.plot()
-        transect_extension = str(settings["min_beach_area"])
-        transect_extension += "_"
-        transect_extension += str(settings["buffer_size"])
-        transect_extension += "_"
-        transect_extension += str(settings["min_length_sl"])
-        transect_extension += "_"
-        transect_extension += str(settings["max_dist_ref"])
-        transect_extension += "_transects.geojson"
+        # transectSettings['additional inputs']       = settings
+        # transects_gdf = SDS_transects.auto_comp_transects(transectSettings)
+        # transects_gdf.plot()
+        # transect_extension = str(settings["min_beach_area"])
+        # transect_extension += "_"
+        # transect_extension += str(settings["buffer_size"])
+        # transect_extension += "_"
+        # transect_extension += str(settings["min_length_sl"])
+        # transect_extension += "_"
+        # transect_extension += str(settings["max_dist_ref"])
+        # transect_extension += "_transects.geojson"
 
-        geojson_file = os.path.join(os.getcwd(), inputs['sitename'], transect_extension)
-        transects = SDS_tools.transects_from_geojson(geojson_file)
+        # geojson_file = os.path.join(os.getcwd(), inputs['sitename'], transect_extension)
+        # transects = SDS_tools.transects_from_geojson(geojson_file)
         
         pass 
 
