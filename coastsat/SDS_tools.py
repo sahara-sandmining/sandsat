@@ -9,6 +9,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pdb
+import cv2
+import glob
 
 # other modules
 from osgeo import gdal, osr
@@ -549,3 +551,46 @@ def transects_to_gdf(transects):
             gdf_all = gdf_all.append(gdf)
             
     return gdf_all
+
+def make_video(settings):
+
+    if settings['videoOutputFlag']:
+        # Get the path of the data
+        filepath_data           = settings['inputs']['filepath']
+        sitename                = settings['inputs']['sitename']
+    
+        # create a subfolder to store the .jpg images showing the detection
+        pathSimulation          = 'detection_' 
+        pathSimulation          += str(settings['minBeachArea']) 
+        pathSimulation          += '_' 
+        pathSimulation          += str(settings['bufferSize']) 
+        pathSimulation          += '_' 
+        pathSimulation          += str(settings['minLengthSl']) 
+        
+        filepath_jpg = os.path.join(filepath_data, sitename, 'jpg_files', pathSimulation)
+        try: 
+            if len(os.listdir(filepath_jpg)) != 0:
+            
+                filepath_jpg += '/*.jpg'
+                # print("filepath ", filepath_jpg)
+        
+                for filename in glob.glob(filepath_jpg):
+                    # print("Filename", filename)
+                    img = cv2.imread(filename)
+                    height, width, layers = img.shape
+                    size = (width,height)
+                    # print("Size: ", size)
+                    img_array.append(img)
+                    pass 
+            
+                out = cv2.VideoWriter(pathSimulation + '.avi', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+            
+                for i in range(len(img_array)):
+                    out.write(img_array[i])
+                    pass
+                out.release()
+            else: 
+                print("The saved jpg_files directory", filepath_jpg, "is empty so can't make a video!")
+        except:
+            print("The directory ", filepath_jpg, " doesn't exist!")    
+    pass
