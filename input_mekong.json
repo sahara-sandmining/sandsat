@@ -1,0 +1,31 @@
+{
+    "name"                              :   "MEKONG", 
+    "dates"                             : [
+                                            "2019-10-01", 
+                                            "2019-12-06"
+                                          ],
+    "satList"                           : [
+                                            "S2"
+                                          ], 
+
+    "studyAreaGeoJsonPath"              : "Mekong_StudyArea.geojson", 
+    "dirtyHackFlag"                     : false,
+    "outputEpsg"                        : 32650,
+    "checkDetection"                    : false,    
+    "saveFigure"                        : true,       
+    "colorStyle"                        : false,  
+    "cloudMaskIssueFlag"                : false,  
+    "sandColor"                         : "default", 
+
+    "cloudThresh"                       : 0.5,
+    "cloudThreshMonteCarlo"             : null,    
+    "minBeachArea"                      : 4500, 
+    "minBeachAreaMonteCarlo"            : 500, 
+    "bufferSize"                        : 150, 
+    "bufferSizeMonteCarlo"              : 15, 
+    "minLengthSl"                       : 200, 
+    "minLengthMonteCarlo"               : 20, 
+
+    "numberOfMonteCarloSimulations"     : 2,    
+    "videoOutputFlag"                   : true
+}
