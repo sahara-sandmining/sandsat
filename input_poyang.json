@@ -19,7 +19,13 @@
     "referenceGeoJsonFiles"             : [ 
                                             "poyang_refline1.geojson",
                                             "poyang_refline2.geojson" 
-                                          ],                                      
+                                          ], 
+    "transectSettings"                  : {
+                                            "reference_filename": "poyang_refline1.geojson",
+                                            "spacing": 50,
+                                            "section_length": 800
+                                          },
+
     "cloudThresh"                       : 0.5,
     "cloudThreshMonteCarlo"             : null,    
     "minBeachArea"                      : 4500, 

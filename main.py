@@ -80,6 +80,7 @@ numberOfMonteCarloSimulations       = inputParameters["numberOfMonteCarloSimulat
 videoOutputFlag                     = inputParameters["videoOutputFlag"]
 saveJpgPreprocessFlag               = inputParameters["saveJpgPreprocessFlag"]
 referenceGeoJsonFiles               = inputParameters["referenceGeoJsonFiles"]
+transectSettings                    = inputParameters["transectSettings"]
 
 # Print the variables
 print("Dates for analysis:                      ", dates)
@@ -212,8 +213,24 @@ else:
             settings['max_dist_ref'] = random.randint(
                     (maximumDistanceReference - maximumDistanceReferenceMonteCarlo), (maximumDistanceReference + maximumDistanceReferenceMonteCarlo)) 
             pass
-        output = SDS_shoreline.extract_shorelines(metadata, settings)
-        SDS_tools.make_video(settings)
+        # output = SDS_shoreline.extract_shorelines(metadata, settings)
+        # SDS_tools.make_video(settings)
+
+        transectSettings['additional inputs']       = settings
+        transects_gdf = SDS_transects.auto_comp_transects(transectSettings)
+        transects_gdf.plot()
+        transect_extension = str(settings["min_beach_area"])
+        transect_extension += "_"
+        transect_extension += str(settings["buffer_size"])
+        transect_extension += "_"
+        transect_extension += str(settings["min_length_sl"])
+        transect_extension += "_"
+        transect_extension += str(settings["max_dist_ref"])
+        transect_extension += "_transects.geojson"
+
+        geojson_file = os.path.join(os.getcwd(), inputs['sitename'], transect_extension)
+        transects = SDS_tools.transects_from_geojson(geojson_file)
+        
         pass 
 
 print("")
@@ -221,6 +238,7 @@ print("******************************************************************")
 print("             Shorelines have been extracted                       ")
 print("******************************************************************")
 print("")
+
 
 # To plot the shorelines from the output. 
 # <<< NOT NEEDEED since it is being done in post-processing.
@@ -238,6 +256,3 @@ print("")
 # mng.window.showMaximized()    
 # fig.set_size_inches([15.76,  8.52])
 
-
-# get_ipython().run_line_magic('matplotlib', 'qt')
-# transects = SDS_transects.draw_transects(output, settings)

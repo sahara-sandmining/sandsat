@@ -11,6 +11,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import pdb
+import geopandas as gpd
+
 from shapely.geometry import LineString, MultiLineString, Point
 
 
@@ -52,9 +54,9 @@ def auto_comp_transects(transect_settings):
     """
     spc = transect_settings['spacing']
     sect_len = transect_settings['section_length']
-    output_epsg_no = settings['output_epsg']
-    sitename = settings['inputs']['sitename']
-    filepath = os.path.join(settings['inputs']['filepath'], sitename)
+    output_epsg_no = transect_settings['additional inputs']['output_epsg']
+    sitename = transect_settings['additional inputs']['inputs']['sitename']
+    filepath = os.path.join(transect_settings['additional inputs']['inputs']['filepath'], sitename)
     
     # read reference shoreline in 'refline'
     refline = gpd.read_file(transect_settings['reference_filename'])
