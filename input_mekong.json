@@ -16,15 +16,18 @@
     "colorStyle"                        : false,  
     "cloudMaskIssueFlag"                : false,  
     "sandColor"                         : "default", 
-
+    "referenceGeoJsonFiles"             : [ 
+                                            "poyang_refline1.geojson",
+                                            "poyang_refline2.geojson" 
+                                          ],                                      
     "cloudThresh"                       : 0.5,
     "cloudThreshMonteCarlo"             : null,    
     "minBeachArea"                      : 4500, 
-    "minBeachAreaMonteCarlo"            : 500, 
+    "minBeachAreaMonteCarlo"            : null, 
     "bufferSize"                        : 150, 
     "bufferSizeMonteCarlo"              : 15, 
     "minLengthSl"                       : 200, 
-    "minLengthMonteCarlo"               : 20, 
+    "minLengthMonteCarlo"               : null, 
     "maximumDistanceReference"          : 1000, 
     "maximumDistanceReferenceMonteCarlo": 200, 
     "numberOfMonteCarloSimulations"     : 1,    

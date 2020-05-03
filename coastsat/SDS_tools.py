@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import pdb
 import cv2
 import glob
+import pickle
 
 # other modules
 from osgeo import gdal, osr
@@ -596,3 +597,36 @@ def make_video(settings):
         except:
             print("The directory ", filepath_jpg, " doesn't exist!")    
     pass
+
+def generateReferencePklFile(settings):
+    
+    referenceGeoJsonFiles       = settings["referenceGeoJsonFiles"]
+
+    poy = gpd.read_file(referenceGeoJsonFiles[0])
+    g = [i for i in poy.geometry]
+    x,y = g[0].coords.xy
+    coords1 = np.dstack((x,y))[0]
+
+    poy = gpd.read_file(referenceGeoJsonFiles[1])
+    g = [i for i in poy.geometry]
+    x,y = g[0].coords.xy
+    coords2 = np.dstack((x,y))[0]
+
+    if 'coords2' in globals():
+        # print("Using dual reference")
+        refs = np.append(coords1, coords2, axis = 0)
+    elif 'coords2' in locals():
+        # print("Using dual reference")
+        refs = np.append(coords1, coords2, axis = 0)
+    else:
+        # print("using single reference")
+        refs = coords1
+    # print(refs)
+    filePath            = settings['inputs']['filepath']
+    sitename            = settings['inputs']['sitename']
+
+    print("Path of the file", filePath + '/' + sitename + '/' + sitename + '_reference_shoreline.pkl')
+    with open(filePath + '/' + sitename + '/' + sitename + '_reference_shoreline.pkl', "wb") as f:
+        pickle.dump(refs, f)
+        pass
+    pass 
