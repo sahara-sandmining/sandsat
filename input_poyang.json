@@ -28,15 +28,15 @@
 
     "cloudThresh"                       : 0.5,
     "cloudThreshMonteCarlo"             : null,    
-    "minBeachArea"                      : 4500, 
-    "minBeachAreaMonteCarlo"            : null, 
-    "bufferSize"                        : 150, 
-    "bufferSizeMonteCarlo"              : 15, 
+    "minBeachArea"                      : 10000, 
+    "minBeachAreaMonteCarlo"            : 5000, 
+    "bufferSize"                        : 500, 
+    "bufferSizeMonteCarlo"              : 400, 
     "minLengthSl"                       : 200, 
     "minLengthMonteCarlo"               : null, 
     "maximumDistanceReference"          : 1000, 
-    "maximumDistanceReferenceMonteCarlo": 200, 
-    "numberOfMonteCarloSimulations"     : 1,    
+    "maximumDistanceReferenceMonteCarlo": null, 
+    "numberOfMonteCarloSimulations"     : 500,    
     "videoOutputFlag"                   : false, 
     "saveJpgPreprocessFlag"             : false
 }

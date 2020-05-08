@@ -23,75 +23,16 @@ from fiona import collection
 from shapely.geometry import LineString, MultiLineString, Point
 import geopandas as gpd
 
-# ##############################################################################
-# User input
 
-# Input shapefile. Must be a single, simple line, in projected co-ordinates
-in_file = r'C:\Users\Administrator\Downloads\CoastSat\poyangref1989.geojson'
-
-# The shapefile to which the perpendicular lines will be written
-#out_file = r'C:\Users\Administrator\Downloads\CoastSat\poyang_refline1_transects.geojson'
-
-# Profile spacing. The distance at which to space the perpendicular profiles
-# In the same units as the original shapefile (e.g. metres)
-spc = 50
-
-# Length of cross-sections to calculate either side of central line
-# i.e. the total length will be twice the value entered here.
-# In the same co-ordinates as the original shapefile
-sect_len = 600
-# ##############################################################################
-
-refline = gpd.read_file(in_file)
-line = LineString(refline.geometry[0])
-wgs84 = {'init': 'epsg:4326'}
-print(refline.crs == wgs84)
-'''
-Here we need a different method: 
+my_transect_settings = {
+    'filename':  r'C:\Users\Administrator\Downloads\CoastSat\poyang_refline1.geojson',
+    'spacing': 50,
+    'section_length': 800,
+    'output_EPSG': 32650,
+    'sitename' : "POYANG",
+    'filepath' : r'C:\Users\Administrator\Downloads\CoastSat\data',
     
-    - input: reference line (either geojson or pickle, probably geojson is the best)
-    - output: geojson & pickle (.pkl)
-    - transformation: write input file to Shapely LineString called 'line'
-'''
-
-'''
-original script is here
-
-# Open the shapefile and get the data
-#source = collection(in_shp, "r")
-data = source.next()['geometry']
-line = LineString(data['coordinates'])
-
-# Define a schema for the output features. Add a new field called 'Dist'
-# to uniquely identify each profile
-schema = source.schema.copy()
-schema['properties']['Dist'] = 'float'
-
-# Open a new sink for the output features, using the same format driver
-# and coordinate reference system as the source.
-sink = collection(out_shp, "w", driver=source.driver, schema=schema,
-                  crs=source.crs)
-'''
-
-''' This part we keep, including the forloop'''
-"""
-data = {'name': ['a', 'b', 'c'],
-        'x': [173994.1578792833, 173974.1578792833, 173910.1578792833],
-        'y': [444135.6032947102, 444186.6032947102, 444111.6032947102]}
-df = pd.DataFrame(data)
-print("df.head ", df.head)
-
-geometry = [Point(xy) for xy in zip(df['x'], df['y'])]
-print("geometry ",geometry)
-
-"""
-
-
-transect_settings = {
-    'filename': ,
-    'spacing': ,
-    'section_length': ,
-    'additional inputs': settings
+    #'additional inputs': settings
     }
 
 def auto_comp_transects(transect_settings):
@@ -125,9 +66,9 @@ def auto_comp_transects(transect_settings):
     """
     spc = transect_settings['spacing']
     sect_len = transect_settings['section_length']
-    output_epsg_no = settings['output_epsg']
-    sitename = settings['inputs']['sitename']
-    filepath = os.path.join(settings['inputs']['filepath'], sitename)
+    output_epsg_no = transect_settings['output_EPSG'] #settings['output_epsg']
+    sitename = transect_settings['sitename'] #settings['inputs']['sitename']
+    filepath = transect_settings['filepath'] #os.path.join(settings['inputs']['filepath'], sitename)
     
     # read reference shoreline in 'refline'
     refline = gpd.read_file(transect_settings['filename'])
@@ -202,9 +143,11 @@ def auto_comp_transects(transect_settings):
     all_transects.crs = outcrs
     
     # write to file
-    all_transects.to_file(os.path.join(filepath, sitename + '_auto_transects.geojson'), driver='GeoJSON', encoding='utf-8')
+    out_name = filepath + sitename + '_auto_transects.geojson'
+    all_transects.to_file(filename = out_name, driver='GeoJSON', encoding='utf-8')
     print("Transects are written to file")
     
     return(all_transects)
 
-    
+my_transect = auto_comp_transects(my_transect_settings) 
+my_transect.plot()   
