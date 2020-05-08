@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "MekongROICrop",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "MekongEastCrop", "Description": "" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 105.932383, 10.3013108 ], [ 105.9081788, 10.2865322 ], [ 105.9170193, 10.2740332 ], [ 105.9387345, 10.2914303 ], [ 105.932383, 10.3013108 ] ] ] } }
+]
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "PoyangLakeIsland",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "PoyangLakeIslandSouth", "Description": "" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 116.075017925560104, 29.263856154090771 ], [ 116.078612802868804, 29.209275578469331 ], [ 116.201948476265997, 29.21504847834316 ], [ 116.195871126053902, 29.26736118071031 ], [ 116.075017925560104, 29.263856154090771 ] ] ] } }
+]
+}

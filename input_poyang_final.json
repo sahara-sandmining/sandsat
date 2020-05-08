@@ -1,0 +1,42 @@
+{
+    "name"                              :   "POYANG", 
+    "dates"                             : [
+                                            "1985-01-01", 
+                                            "2020-05-06"
+                                          ],
+    "satList"                           : [
+                                            "L5", "L7", "L8","S2"
+                                          ], 
+
+    "studyAreaGeoJsonPath"              : "poyang_studyArea.geojson", 
+    "dirtyHackFlag"                     : false,
+    "outputEpsg"                        : 32650,
+    "checkDetection"                    : false,    
+    "saveFigure"                        : true,       
+    "colorStyle"                        : false,  
+    "cloudMaskIssueFlag"                : false,  
+    "sandColor"                         : "default", 
+    "referenceGeoJsonFiles"             : [ 
+                                            "poyang_refline1.geojson",
+                                            "poyang_refline2.geojson" 
+                                          ], 
+    "transectSettings"                  : {
+                                            "reference_filename": "poyang_refline1.geojson",
+                                            "spacing": 50,
+                                            "section_length": 800
+                                          },
+
+    "cloudThresh"                       : 0.5,
+    "cloudThreshMonteCarlo"             : null,    
+    "minBeachArea"                      : 16000, 
+    "minBeachAreaMonteCarlo"            : null, 
+    "bufferSize"                        : 300, 
+    "bufferSizeMonteCarlo"              : null, 
+    "minLengthSl"                       : 1500, 
+    "minLengthMonteCarlo"               : null, 
+    "maximumDistanceReference"          : 400, 
+    "maximumDistanceReferenceMonteCarlo": null, 
+    "numberOfMonteCarloSimulations"     : 0,    
+    "videoOutputFlag"                   : false, 
+    "saveJpgPreprocessFlag"             : false
+}
